@@ -200,7 +200,7 @@ $result = $stmt->get_result();
                 <option value="deceased" <?php echo $status === 'deceased' ? 'selected' : ''; ?>>Deceased</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-secondary">Filter</button>
+        <button type="submit" class="btn btn-secondary">🔍 Search</button>
         <a href="index.php" class="btn btn-outline">Clear</a>
     </form>
 </div>
@@ -241,9 +241,9 @@ $result = $stmt->get_result();
                 }
             ?>
             <tr>
-                <td><strong><?php echo htmlspecialchars($row['animal_tag']); ?></strong></td>
-                <td><?php echo ucfirst($row['animal_type']); ?></td>
-                <td><?php echo htmlspecialchars($row['breed']); ?></td>
+                <td><strong><?php echo htmlspecialchars($row['animal_tag'] ?? ''); ?></strong></td>
+                <td><?php echo ucfirst($row['animal_type'] ?? ''); ?></td>
+                <td><?php echo htmlspecialchars($row['breed'] ?? ''); ?></td>
                 <td><?php echo $row['gender'] ? ucfirst($row['gender']) : 'N/A'; ?></td>
                 <td><?php echo $age ?: 'N/A'; ?></td>
                 <td><?php echo $row['quantity']; ?></td>

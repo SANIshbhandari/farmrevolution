@@ -160,7 +160,7 @@ function redirect($url) {
  * @return string Formatted currency string
  */
 function formatCurrency($amount) {
-    return 'Rs. ' . number_format($amount ?? 0, 2);
+    return 'रू ' . number_format($amount ?? 0, 2);
 }
 
 /**

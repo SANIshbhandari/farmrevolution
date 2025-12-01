@@ -78,7 +78,7 @@ $result = $stmt->get_result();
                 <option value="manager" <?php echo $role_filter === 'manager' ? 'selected' : ''; ?>>Manager</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-secondary">Filter</button>
+        <button type="submit" class="btn btn-secondary">🔍 Search</button>
         <a href="index.php" class="btn btn-outline">Clear</a>
     </form>
 </div>

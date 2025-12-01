@@ -68,14 +68,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->close();
     }
 } else {
-    $name = $employee['name'];
-    $role = $employee['role'];
-    $phone = $employee['phone'];
-    $email = $employee['email'];
-    $salary = $employee['salary'];
-    $hire_date = $employee['hire_date'];
-    $status = $employee['status'];
-    $notes = $employee['notes'];
+    $name = $employee['name'] ?? '';
+    $role = $employee['role'] ?? '';
+    $phone = $employee['phone'] ?? '';
+    $email = $employee['email'] ?? '';
+    $salary = $employee['salary'] ?? 0;
+    $hire_date = $employee['hire_date'] ?? date('Y-m-d');
+    $status = $employee['status'] ?? 'active';
+    $notes = $employee['notes'] ?? '';
 }
 ?>
 

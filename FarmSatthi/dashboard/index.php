@@ -259,7 +259,7 @@ if ($userRole === 'admin') {
                 <tbody>
                     <?php foreach ($recentUsers as $user): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($user['username']); ?></td>
+                        <td><?php echo htmlspecialchars($user['username'] ?? ''); ?></td>
                         <td><span class="badge badge-<?php echo $user['role']; ?>"><?php echo ucfirst($user['role']); ?></span></td>
                         <td><?php echo formatDate($user['created_at']); ?></td>
                     </tr>
@@ -378,7 +378,7 @@ if ($userRole === 'admin') {
                     ?>
                     <div style="margin: 12px 0;">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                            <span style="font-weight: 600;"><?php echo htmlspecialchars($category['category']); ?></span>
+                            <span style="font-weight: 600;"><?php echo htmlspecialchars($category['category'] ?? ''); ?></span>
                             <span style="color: #666;"><?php echo formatCurrency($category['total']); ?> (<?php echo number_format($percentage, 1); ?>%)</span>
                         </div>
                         <div style="background: #e9ecef; height: 8px; border-radius: 4px; overflow: hidden;">
@@ -459,7 +459,7 @@ if ($userRole === 'admin') {
             <?php foreach ($alerts as $alert): ?>
             <div class="alert-item alert-<?php echo $alert['type']; ?>">
                 <span class="alert-icon"><?php echo $alert['icon']; ?></span>
-                <span class="alert-message"><?php echo htmlspecialchars($alert['message']); ?></span>
+                <span class="alert-message"><?php echo htmlspecialchars($alert['message'] ?? ''); ?></span>
                 <a href="<?php echo $alert['link']; ?>" class="alert-action">View →</a>
             </div>
             <?php endforeach; ?>

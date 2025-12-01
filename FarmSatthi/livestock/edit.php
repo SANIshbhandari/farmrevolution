@@ -58,11 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 } else {
     // Pre-fill form
-    $breed = $animal['breed'];
-    $quantity = $animal['quantity'];
-    $current_location = $animal['current_location'];
-    $status = $animal['status'];
-    $notes = $animal['notes'];
+    $breed = $animal['breed'] ?? '';
+    $quantity = $animal['quantity'] ?? 1;
+    $current_location = $animal['current_location'] ?? '';
+    $status = $animal['status'] ?? 'active';
+    $notes = $animal['notes'] ?? '';
 }
 ?>
 

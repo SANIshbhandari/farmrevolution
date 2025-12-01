@@ -80,7 +80,7 @@ if (!$result) {
                 <?php while ($row = $result->fetch_assoc()): ?>
                 <tr>
                     <td><?php echo $row['id']; ?></td>
-                    <td><strong><?php echo htmlspecialchars($row['username']); ?></strong></td>
+                    <td><strong><?php echo htmlspecialchars($row['username'] ?? ''); ?></strong></td>
                     <td>
                         <span class="badge badge-<?php echo $row['role']; ?>">
                             <?php echo ucfirst($row['role']); ?>
@@ -121,8 +121,8 @@ if (!$result) {
             <?php while ($activity = $activityResult->fetch_assoc()): ?>
             <tr>
                 <td><?php echo htmlspecialchars($activity['username'] ?? 'System'); ?></td>
-                <td><span class="badge badge-info"><?php echo htmlspecialchars($activity['action']); ?></span></td>
-                <td><?php echo htmlspecialchars($activity['module']); ?></td>
+                <td><span class="badge badge-info"><?php echo htmlspecialchars($activity['action'] ?? ''); ?></span></td>
+                <td><?php echo htmlspecialchars($activity['module'] ?? ''); ?></td>
                 <td><?php echo htmlspecialchars($activity['description'] ?? ''); ?></td>
                 <td><?php echo formatDate($activity['created_at']); ?></td>
             </tr>
@@ -168,7 +168,7 @@ if ($tableCheck && $tableCheck->num_rows > 0):
                 <?php while ($activity = $activityResult->fetch_assoc()): ?>
                 <tr>
                     <td><?php echo date('M d, Y H:i:s', strtotime($activity['created_at'])); ?></td>
-                    <td><strong><?php echo htmlspecialchars($activity['username']); ?></strong></td>
+                    <td><strong><?php echo htmlspecialchars($activity['username'] ?? ''); ?></strong></td>
                     <td>
                         <?php
                         $actionColors = [
@@ -184,8 +184,8 @@ if ($tableCheck && $tableCheck->num_rows > 0):
                         </span>
                     </td>
                     <td><?php echo ucfirst($activity['module']); ?></td>
-                    <td><?php echo htmlspecialchars($activity['description']); ?></td>
-                    <td><small><?php echo htmlspecialchars($activity['ip_address']); ?></small></td>
+                    <td><?php echo htmlspecialchars($activity['description'] ?? ''); ?></td>
+                    <td><small><?php echo htmlspecialchars($activity['ip_address'] ?? ''); ?></small></td>
                 </tr>
                 <?php endwhile; ?>
             </tbody>

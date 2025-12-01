@@ -91,6 +91,7 @@ CREATE TABLE IF NOT EXISTS inventory (
     -- For supplies
     quantity DECIMAL(10,2) NULL,
     unit VARCHAR(20) NULL,
+    reorder_level DECIMAL(10,2) NULL COMMENT 'Minimum quantity threshold for reordering supplies',
     
     -- For equipment
     purchase_date DATE NULL,

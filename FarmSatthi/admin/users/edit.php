@@ -93,9 +93,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 } else {
-    $username = $user['username'];
-    $email = $user['email'];
-    $role = $user['role'];
+    $username = $user['username'] ?? '';
+    $email = $user['email'] ?? '';
+    $role = $user['role'] ?? 'viewer';
 }
 ?>
 

@@ -87,7 +87,7 @@ $result = $stmt->get_result();
                 <option value="failed" <?php echo $status === 'failed' ? 'selected' : ''; ?>>Failed</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-secondary">Filter</button>
+        <button type="submit" class="btn btn-secondary">🔍 Search</button>
         <a href="index.php" class="btn btn-outline">Clear</a>
     </form>
 </div>
@@ -111,8 +111,8 @@ $result = $stmt->get_result();
         <tbody>
             <?php while ($row = $result->fetch_assoc()): ?>
             <tr>
-                <td><?php echo htmlspecialchars($row['crop_name']); ?></td>
-                <td><?php echo htmlspecialchars($row['crop_type']); ?></td>
+                <td><?php echo htmlspecialchars($row['crop_name'] ?? ''); ?></td>
+                <td><?php echo htmlspecialchars($row['crop_type'] ?? ''); ?></td>
                 <td><?php echo formatDate($row['planting_date']); ?></td>
                 <td><?php echo $row['harvest_date'] ? formatDate($row['harvest_date']) : 'Not set'; ?></td>
                 <td><?php echo number_format($row['area_hectares'], 2); ?></td>

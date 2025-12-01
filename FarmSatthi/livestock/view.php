@@ -85,15 +85,15 @@ if ($animal['date_of_birth']) {
         <div class="profile-info">
             <div class="info-item">
                 <label>Animal Tag</label>
-                <value><?php echo htmlspecialchars($animal['animal_tag']); ?></value>
+                <value><?php echo htmlspecialchars($animal['animal_tag'] ?? ''); ?></value>
             </div>
             <div class="info-item">
                 <label>Type</label>
-                <value><?php echo ucfirst($animal['animal_type']); ?></value>
+                <value><?php echo ucfirst($animal['animal_type'] ?? ''); ?></value>
             </div>
             <div class="info-item">
                 <label>Breed</label>
-                <value><?php echo htmlspecialchars($animal['breed']); ?></value>
+                <value><?php echo htmlspecialchars($animal['breed'] ?? ''); ?></value>
             </div>
             <div class="info-item">
                 <label>Gender</label>
@@ -124,13 +124,13 @@ if ($animal['date_of_birth']) {
             <?php if ($animal['current_location']): ?>
             <div class="info-item">
                 <label>Location</label>
-                <value><?php echo htmlspecialchars($animal['current_location']); ?></value>
+                <value><?php echo htmlspecialchars($animal['current_location'] ?? ''); ?></value>
             </div>
             <?php endif; ?>
             <?php if ($animal['mother_tag']): ?>
             <div class="info-item">
                 <label>Mother</label>
-                <value><?php echo htmlspecialchars($animal['mother_tag']); ?></value>
+                <value><?php echo htmlspecialchars($animal['mother_tag'] ?? ''); ?></value>
             </div>
             <?php endif; ?>
             <?php if ($animal['acquisition_type'] === 'purchase'): ?>
@@ -148,7 +148,7 @@ if ($animal['date_of_birth']) {
         <?php if ($animal['notes']): ?>
         <div class="info-item" style="margin-top: 15px;">
             <label>Notes</label>
-            <value><?php echo nl2br(htmlspecialchars($animal['notes'])); ?></value>
+            <value><?php echo nl2br(htmlspecialchars($animal['notes'] ?? '')); ?></value>
         </div>
         <?php endif; ?>
     </div>
@@ -158,11 +158,11 @@ if ($animal['date_of_birth']) {
     <?php if (count($healthRecords) > 0): ?>
         <?php foreach ($healthRecords as $record): ?>
         <div class="record-card">
-            <h4><?php echo htmlspecialchars($record['description']); ?></h4>
-            <p><strong>Type:</strong> <?php echo ucfirst($record['type']); ?></p>
+            <h4><?php echo htmlspecialchars($record['description'] ?? ''); ?></h4>
+            <p><strong>Type:</strong> <?php echo ucfirst($record['type'] ?? ''); ?></p>
             <p><strong>Date:</strong> <?php echo formatDate($record['date']); ?></p>
             <?php if (!empty($record['veterinarian'])): ?>
-            <p><strong>Veterinarian:</strong> <?php echo htmlspecialchars($record['veterinarian']); ?></p>
+            <p><strong>Veterinarian:</strong> <?php echo htmlspecialchars($record['veterinarian'] ?? ''); ?></p>
             <?php endif; ?>
             <?php if (!empty($record['cost'])): ?>
             <p><strong>Cost:</strong> <?php echo formatCurrency($record['cost']); ?></p>
@@ -171,7 +171,7 @@ if ($animal['date_of_birth']) {
             <p><strong>Next Due:</strong> <?php echo formatDate($record['next_due_date']); ?></p>
             <?php endif; ?>
             <?php if (!empty($record['notes'])): ?>
-            <p><strong>Notes:</strong> <?php echo htmlspecialchars($record['notes']); ?></p>
+            <p><strong>Notes:</strong> <?php echo htmlspecialchars($record['notes'] ?? ''); ?></p>
             <?php endif; ?>
         </div>
         <?php endforeach; ?>
@@ -199,7 +199,7 @@ if ($animal['date_of_birth']) {
             <p><strong>Evening:</strong> <?php echo number_format($record['evening'], 2); ?> <?php echo $record['unit']; ?></p>
             <?php endif; ?>
             <?php if (!empty($record['notes'])): ?>
-            <p><strong>Notes:</strong> <?php echo htmlspecialchars($record['notes']); ?></p>
+            <p><strong>Notes:</strong> <?php echo htmlspecialchars($record['notes'] ?? ''); ?></p>
             <?php endif; ?>
         </div>
         <?php endforeach; ?>
@@ -220,7 +220,7 @@ if ($animal['date_of_birth']) {
         <div class="record-card">
             <h4>Breeding on <?php echo formatDate($record['date']); ?></h4>
             <?php if (!empty($record['father_tag'])): ?>
-            <p><strong>Father:</strong> <?php echo htmlspecialchars($record['father_tag']); ?></p>
+            <p><strong>Father:</strong> <?php echo htmlspecialchars($record['father_tag'] ?? ''); ?></p>
             <?php endif; ?>
             <?php if (!empty($record['expected_delivery'])): ?>
             <p><strong>Expected Delivery:</strong> <?php echo formatDate($record['expected_delivery']); ?></p>
@@ -230,7 +230,7 @@ if ($animal['date_of_birth']) {
             <p><strong>Offspring:</strong> <?php echo $record['offspring_count']; ?></p>
             <?php endif; ?>
             <?php if (!empty($record['notes'])): ?>
-            <p><strong>Notes:</strong> <?php echo htmlspecialchars($record['notes']); ?></p>
+            <p><strong>Notes:</strong> <?php echo htmlspecialchars($record['notes'] ?? ''); ?></p>
             <?php endif; ?>
         </div>
         <?php endforeach; ?>
@@ -248,12 +248,12 @@ if ($animal['date_of_birth']) {
             $totalExpenses += $expense['amount'];
         ?>
         <div class="record-card">
-            <h4><?php echo htmlspecialchars($expense['description']); ?></h4>
-            <p><strong>Category:</strong> <?php echo ucfirst($expense['category']); ?></p>
+            <h4><?php echo htmlspecialchars($expense['description'] ?? ''); ?></h4>
+            <p><strong>Category:</strong> <?php echo ucfirst($expense['category'] ?? ''); ?></p>
             <p><strong>Date:</strong> <?php echo formatDate($expense['date']); ?></p>
             <p><strong>Amount:</strong> <?php echo formatCurrency($expense['amount']); ?></p>
             <?php if (!empty($expense['notes'])): ?>
-            <p><strong>Notes:</strong> <?php echo htmlspecialchars($expense['notes']); ?></p>
+            <p><strong>Notes:</strong> <?php echo htmlspecialchars($expense['notes'] ?? ''); ?></p>
             <?php endif; ?>
         </div>
         <?php endforeach; ?>

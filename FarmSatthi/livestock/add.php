@@ -191,11 +191,11 @@ $mothers = $conn->query("
                 <select id="mother_tag" name="mother_tag" class="form-control">
                     <option value="">Select Mother (Optional)</option>
                     <?php while ($mother = $mothers->fetch_assoc()): ?>
-                    <option value="<?php echo htmlspecialchars($mother['animal_tag']); ?>"
+                    <option value="<?php echo htmlspecialchars($mother['animal_tag'] ?? ''); ?>"
                         <?php echo ($_POST['mother_tag'] ?? '') === $mother['animal_tag'] ? 'selected' : ''; ?>>
-                        <?php echo htmlspecialchars($mother['animal_tag']); ?> - 
-                        <?php echo htmlspecialchars($mother['animal_type']); ?> 
-                        (<?php echo htmlspecialchars($mother['breed']); ?>)
+                        <?php echo htmlspecialchars($mother['animal_tag'] ?? ''); ?> - 
+                        <?php echo htmlspecialchars($mother['animal_type'] ?? ''); ?> 
+                        (<?php echo htmlspecialchars($mother['breed'] ?? ''); ?>)
                     </option>
                     <?php endwhile; ?>
                 </select>

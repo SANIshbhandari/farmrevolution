@@ -72,9 +72,14 @@ $result = $stmt->get_result();
 
 <div class="module-header">
     <h2>Inventory Management</h2>
-    <?php if (canModify()): ?>
-    <a href="add.php" class="btn btn-primary">+ Add New Item</a>
-    <?php endif; ?>
+    <div>
+        <a href="supplies.php" class="btn btn-secondary">📦 Supplies</a>
+        <a href="equipment.php" class="btn btn-secondary">🔧 Equipment</a>
+        <a href="employees.php" class="btn btn-secondary">👥 Employees</a>
+        <?php if (canModify()): ?>
+        <a href="add.php" class="btn btn-primary">+ Add New Item</a>
+        <?php endif; ?>
+    </div>
 </div>
 
 <div class="filters-section">
@@ -104,7 +109,7 @@ $result = $stmt->get_result();
                 <option value="low_stock" <?php echo $status === 'low_stock' ? 'selected' : ''; ?>>Low Stock</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-secondary">Filter</button>
+        <button type="submit" class="btn btn-secondary">🔍 Search</button>
         <a href="index.php" class="btn btn-outline">Clear</a>
     </form>
 </div>
@@ -129,7 +134,7 @@ $result = $stmt->get_result();
         </thead>
         <tbody>
             <?php while ($row = $result->fetch_assoc()): 
-                $isLowStock = $row['item_type'] === 'supply' && $row['quantity'] > 0 && $row['reorder_level'] > 0 && $row['quantity'] <= $row['reorder_level'];
+                $isLowStock = $row['item_type'] === 'supply' && $row['quantity'] > 0 && $row['reorder_level'] !== null && $row['reorder_level'] >= 0 && $row['quantity'] <= $row['reorder_level'];
             ?>
             <tr class="<?php echo $isLowStock ? 'low-stock-row' : ''; ?>">
                 <td><span class="badge badge-info"><?php echo ucfirst($row['item_type']); ?></span></td>
@@ -137,7 +142,7 @@ $result = $stmt->get_result();
                 <td><?php echo htmlspecialchars($row['category']); ?></td>
                 <td><?php echo $row['quantity'] ? number_format($row['quantity'], 2) : 'N/A'; ?></td>
                 <td><?php echo htmlspecialchars($row['unit'] ?? 'N/A'); ?></td>
-                <td><?php echo $row['item_type'] === 'supply' && $row['reorder_level'] ? number_format($row['reorder_level'], 2) : 'N/A'; ?></td>
+                <td><?php echo $row['reorder_level'] !== null ? number_format($row['reorder_level'], 2) : 'N/A'; ?></td>
                 <td>
                     <?php if ($isLowStock): ?>
                         <span class="badge badge-warning">⚠️ Low Stock</span>
@@ -161,7 +166,7 @@ $result = $stmt->get_result();
 <?php if ($pagination['total_pages'] > 1): ?>
 <div class="pagination">
     <?php if ($pagination['has_previous']): ?>
-    <a href="?page=<?php echo $page - 1; ?>&search=<?php echo urlencode($search); ?>&category=<?php echo urlencode($category); ?><?php echo $low_stock ? '&low_stock=1' : ''; ?>" class="btn btn-sm">Previous</a>
+    <a href="?page=<?php echo $page - 1; ?>&search=<?php echo urlencode($search); ?>&item_type=<?php echo urlencode($item_type); ?>&status=<?php echo urlencode($status); ?>" class="btn btn-sm">Previous</a>
     <?php endif; ?>
     
     <span class="pagination-info">
@@ -170,7 +175,7 @@ $result = $stmt->get_result();
     </span>
     
     <?php if ($pagination['has_next']): ?>
-    <a href="?page=<?php echo $page + 1; ?>&search=<?php echo urlencode($search); ?>&category=<?php echo urlencode($category); ?><?php echo $low_stock ? '&low_stock=1' : ''; ?>" class="btn btn-sm">Next</a>
+    <a href="?page=<?php echo $page + 1; ?>&search=<?php echo urlencode($search); ?>&item_type=<?php echo urlencode($item_type); ?>&status=<?php echo urlencode($status); ?>" class="btn btn-sm">Next</a>
     <?php endif; ?>
 </div>
 <?php endif; ?>

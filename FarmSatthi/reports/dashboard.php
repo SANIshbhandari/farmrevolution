@@ -319,16 +319,55 @@ $recentActivities = $conn->query("
 <div class="reports-dashboard">
     <div class="report-header">
         <h2>📊 Reports Dashboard</h2>
-        <div style="display: flex; gap: 10px;">
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <!-- Quick Date Filters -->
+            <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+                <a href="?date_from=<?php echo date('Y-m-d'); ?>&date_to=<?php echo date('Y-m-d'); ?>" class="btn btn-sm btn-outline" title="Today">Today</a>
+                <a href="?date_from=<?php echo date('Y-m-d', strtotime('monday this week')); ?>&date_to=<?php echo date('Y-m-d'); ?>" class="btn btn-sm btn-outline" title="This Week">This Week</a>
+                <a href="?date_from=<?php echo date('Y-m-01'); ?>&date_to=<?php echo date('Y-m-d'); ?>" class="btn btn-sm btn-outline" title="This Month">This Month</a>
+                <a href="?date_from=<?php echo date('Y-01-01'); ?>&date_to=<?php echo date('Y-m-d'); ?>" class="btn btn-sm btn-outline" title="This Year">This Year</a>
+            </div>
+            
+            <!-- Custom Date Filter -->
             <form method="GET" class="date-filter">
                 <input type="date" name="date_from" value="<?php echo $date_from; ?>" class="form-control">
                 <span>to</span>
                 <input type="date" name="date_to" value="<?php echo $date_to; ?>" class="form-control">
-                <button type="submit" class="btn btn-secondary">Filter</button>
+                <button type="submit" class="btn btn-secondary">Apply</button>
             </form>
-            <a href="generate_pdf.php?type=dashboard&date_from=<?php echo $date_from; ?>&date_to=<?php echo $date_to; ?>" class="btn btn-success">📄 Download PDF</a>
+            
+            <!-- Export Options -->
+            <div class="dropdown" style="position: relative; display: inline-block;">
+                <button onclick="toggleDropdown()" class="btn btn-success" title="Export Options">📥 Export ▼</button>
+                <div id="exportDropdown" style="display: none; position: absolute; background: white; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border-radius: 4px; min-width: 200px; z-index: 1000; margin-top: 5px;">
+                    <a href="#" onclick="window.print(); return false;" style="display: block; padding: 10px 15px; text-decoration: none; color: #333; border-bottom: 1px solid #eee;">🖨️ Print/Save as PDF</a>
+                    <a href="generate_pdf.php?type=dashboard&date_from=<?php echo $date_from; ?>&date_to=<?php echo $date_to; ?>" style="display: block; padding: 10px 15px; text-decoration: none; color: #333; border-bottom: 1px solid #eee;">📄 Download PDF</a>
+                    <a href="export_csv.php?type=financial&date_from=<?php echo $date_from; ?>&date_to=<?php echo $date_to; ?>" style="display: block; padding: 10px 15px; text-decoration: none; color: #333; border-bottom: 1px solid #eee;">📊 Export Financial (CSV)</a>
+                    <a href="export_csv.php?type=crops&date_from=<?php echo $date_from; ?>&date_to=<?php echo $date_to; ?>" style="display: block; padding: 10px 15px; text-decoration: none; color: #333; border-bottom: 1px solid #eee;">🌾 Export Crops (CSV)</a>
+                    <a href="export_csv.php?type=livestock&date_from=<?php echo $date_from; ?>&date_to=<?php echo $date_to; ?>" style="display: block; padding: 10px 15px; text-decoration: none; color: #333; border-bottom: 1px solid #eee;">🐄 Export Livestock (CSV)</a>
+                    <a href="export_csv.php?type=inventory&date_from=<?php echo $date_from; ?>&date_to=<?php echo $date_to; ?>" style="display: block; padding: 10px 15px; text-decoration: none; color: #333; border-bottom: 1px solid #eee;">📦 Export Inventory (CSV)</a>
+                    <a href="export_csv.php?type=summary&date_from=<?php echo $date_from; ?>&date_to=<?php echo $date_to; ?>" style="display: block; padding: 10px 15px; text-decoration: none; color: #333;">📋 Export Summary (CSV)</a>
+                </div>
+            </div>
         </div>
     </div>
+    
+    <script>
+    function toggleDropdown() {
+        const dropdown = document.getElementById('exportDropdown');
+        dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+    }
+    
+    // Close dropdown when clicking outside
+    window.onclick = function(event) {
+        if (!event.target.matches('.btn')) {
+            const dropdown = document.getElementById('exportDropdown');
+            if (dropdown && dropdown.style.display === 'block') {
+                dropdown.style.display = 'none';
+            }
+        }
+    }
+    </script>
 
     <!-- Financial Summary Cards -->
     <div class="report-grid">
@@ -374,8 +413,8 @@ $recentActivities = $conn->query("
                     $performance = $crop['expected_yield'] > 0 ? ($crop['actual_yield'] / $crop['expected_yield']) * 100 : 0;
                 ?>
                 <tr>
-                    <td><?php echo htmlspecialchars($crop['crop_name']); ?></td>
-                    <td><?php echo htmlspecialchars($crop['crop_type']); ?></td>
+                    <td><?php echo htmlspecialchars($crop['crop_name'] ?? ''); ?></td>
+                    <td><?php echo htmlspecialchars($crop['crop_type'] ?? ''); ?></td>
                     <td><?php echo number_format($crop['area_hectares'], 2); ?></td>
                     <td><?php echo $crop['expected_yield'] ? number_format($crop['expected_yield'], 2) : 'N/A'; ?></td>
                     <td><?php echo $crop['actual_yield'] ? number_format($crop['actual_yield'], 2) : 'N/A'; ?></td>
@@ -409,8 +448,8 @@ $recentActivities = $conn->query("
                 $productionCount = is_array($production) ? count($production) : 0;
             ?>
             <div style="border: 1px solid #dee2e6; padding: 15px; border-radius: 4px;">
-                <h4 style="margin: 0 0 10px 0;"><?php echo htmlspecialchars($livestock['animal_type']); ?></h4>
-                <p><strong>Breed:</strong> <?php echo htmlspecialchars($livestock['breed']); ?></p>
+                <h4 style="margin: 0 0 10px 0;"><?php echo htmlspecialchars($livestock['animal_type'] ?? ''); ?></h4>
+                <p><strong>Breed:</strong> <?php echo htmlspecialchars($livestock['breed'] ?? ''); ?></p>
                 <p><strong>Quantity:</strong> <?php echo $livestock['quantity']; ?> heads</p>
                 <p><strong>Production Records:</strong> <?php echo $productionCount; ?></p>
                 <p><strong>Status:</strong> <span class="badge badge-<?php echo $livestock['status']; ?>"><?php echo ucfirst($livestock['status']); ?></span></p>
@@ -428,68 +467,117 @@ $recentActivities = $conn->query("
         <?php if ($monthlyData && $monthlyData->num_rows > 0): ?>
         <canvas id="revenueChart" height="80"></canvas>
         <script>
-        const ctx = document.getElementById('revenueChart').getContext('2d');
-        const revenueChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: [
-                    <?php 
-                    $monthlyData->data_seek(0);
-                    $labels = [];
-                    $incomeData = [];
-                    $expenseData = [];
-                    while ($month = $monthlyData->fetch_assoc()) {
-                        $labels[] = "'" . $month['month_label'] . "'";
-                        $incomeData[] = $month['income'];
-                        $expenseData[] = $month['expense'];
-                    }
-                    echo implode(',', $labels);
-                    ?>
-                ],
-                datasets: [{
-                    label: 'Income',
-                    data: [<?php echo implode(',', $incomeData); ?>],
-                    borderColor: '#28a745',
-                    backgroundColor: 'rgba(40, 167, 69, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }, {
-                    label: 'Expenses',
-                    data: [<?php echo implode(',', $expenseData); ?>],
-                    borderColor: '#dc3545',
-                    backgroundColor: 'rgba(220, 53, 69, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top',
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('revenueChart');
+            if (!ctx) {
+                console.error('Canvas element not found');
+                return;
+            }
+            
+            try {
+                const revenueChart = new Chart(ctx.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: [
+                            <?php 
+                            $monthlyData->data_seek(0);
+                            $labels = [];
+                            $incomeData = [];
+                            $expenseData = [];
+                            while ($month = $monthlyData->fetch_assoc()) {
+                                $labels[] = "'" . addslashes($month['month_label']) . "'";
+                                $incomeData[] = floatval($month['income']);
+                                $expenseData[] = floatval($month['expense']);
+                            }
+                            echo implode(',', $labels);
+                            ?>
+                        ],
+                        datasets: [{
+                            label: 'Income',
+                            data: [<?php echo implode(',', $incomeData); ?>],
+                            borderColor: '#28a745',
+                            backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true,
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        }, {
+                            label: 'Expenses',
+                            data: [<?php echo implode(',', $expenseData); ?>],
+                            borderColor: '#dc3545',
+                            backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true,
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        }]
                     },
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false,
-                        callbacks: {
-                            label: function(context) {
-                                return context.dataset.label + ': Rs. ' + context.parsed.y.toLocaleString();
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    font: {
+                                        size: 14,
+                                        weight: 'bold'
+                                    },
+                                    padding: 15
+                                }
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                backgroundColor: 'rgba(0,0,0,0.8)',
+                                padding: 12,
+                                titleFont: {
+                                    size: 14
+                                },
+                                bodyFont: {
+                                    size: 13
+                                },
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.dataset.label + ': रू ' + context.parsed.y.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return 'रू ' + value.toLocaleString('en-IN');
+                                    },
+                                    font: {
+                                        size: 12
+                                    }
+                                },
+                                grid: {
+                                    color: 'rgba(0,0,0,0.05)'
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    font: {
+                                        size: 12
+                                    }
+                                },
+                                grid: {
+                                    display: false
+                                }
                             }
                         }
                     }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return 'Rs. ' + value.toLocaleString();
-                            }
-                        }
-                    }
-                }
+                });
+                console.log('Chart created successfully');
+            } catch (error) {
+                console.error('Error creating chart:', error);
             }
         });
         </script>
@@ -505,12 +593,14 @@ $recentActivities = $conn->query("
                 </tr>
             </thead>
             <tbody>
-                <?php while ($month = $monthlyData->fetch_assoc()): 
+                <?php 
+                $monthlyData->data_seek(0); // Reset pointer to beginning
+                while ($month = $monthlyData->fetch_assoc()): 
                     $profit = $month['income'] - $month['expense'];
                     $maxAmount = max($month['income'], $month['expense']);
                 ?>
                 <tr>
-                    <td><?php echo $month['month_label']; ?></td>
+                    <td><?php echo htmlspecialchars($month['month_label']); ?></td>
                     <td class="stat-positive">₹<?php echo number_format($month['income'], 2); ?></td>
                     <td class="stat-negative">₹<?php echo number_format($month['expense'], 2); ?></td>
                     <td class="<?php echo $profit >= 0 ? 'stat-positive' : 'stat-negative'; ?>">₹<?php echo number_format($profit, 2); ?></td>
@@ -524,7 +614,11 @@ $recentActivities = $conn->query("
             </tbody>
         </table>
         <?php else: ?>
-        <p style="color: #6c757d;">No financial data available for the selected period</p>
+        <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 8px;">
+            <p style="color: #6c757d; font-size: 1.1rem; margin-bottom: 10px;">📊 No financial data available for the selected period</p>
+            <p style="color: #999; font-size: 0.9rem;">Add income and expense transactions to see the revenue vs expense chart</p>
+            <a href="<?php echo url('expenses/add.php'); ?>" class="btn btn-success" style="margin-top: 15px;">+ Add Transaction</a>
+        </div>
         <?php endif; ?>
     </div>
 
@@ -534,56 +628,17 @@ $recentActivities = $conn->query("
         <?php if ($expenseCategories && $expenseCategories->num_rows > 0): 
             $expenses = [];
             $maxExpense = 0;
-            $expenseLabels = [];
-            $expenseValues = [];
             $expenseColors = ['#dc3545', '#ffc107', '#17a2b8', '#6c757d', '#28a745'];
             while ($row = $expenseCategories->fetch_assoc()) {
                 $expenses[] = $row;
                 $maxExpense = max($maxExpense, $row['total']);
-                $expenseLabels[] = "'" . addslashes($row['category']) . "'";
-                $expenseValues[] = $row['total'];
             }
         ?>
-        <canvas id="expenseChart" height="200"></canvas>
-        <script>
-        const expenseCtx = document.getElementById('expenseChart').getContext('2d');
-        new Chart(expenseCtx, {
-            type: 'doughnut',
-            data: {
-                labels: [<?php echo implode(',', $expenseLabels); ?>],
-                datasets: [{
-                    data: [<?php echo implode(',', $expenseValues); ?>],
-                    backgroundColor: <?php echo json_encode(array_slice($expenseColors, 0, count($expenses))); ?>,
-                    borderWidth: 2,
-                    borderColor: '#fff'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                const percentage = ((context.parsed / total) * 100).toFixed(1);
-                                return context.label + ': Rs. ' + context.parsed.toLocaleString() + ' (' + percentage + '%)';
-                            }
-                        }
-                    }
-                }
-            }
-        });
-        </script>
-        
         <div style="margin-top: 20px;">
         <?php foreach ($expenses as $i => $expense): ?>
         <div style="margin-bottom: 15px;">
             <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                <strong><span style="display: inline-block; width: 12px; height: 12px; background: <?php echo $expenseColors[$i]; ?>; border-radius: 50%; margin-right: 8px;"></span><?php echo htmlspecialchars($expense['category']); ?></strong>
+                <strong><span style="display: inline-block; width: 12px; height: 12px; background: <?php echo $expenseColors[$i]; ?>; border-radius: 50%; margin-right: 8px;"></span><?php echo htmlspecialchars($expense['category'] ?? ''); ?></strong>
                 <span>₹<?php echo number_format($expense['total'], 2); ?></span>
             </div>
             <div class="progress-bar">
@@ -625,7 +680,7 @@ $recentActivities = $conn->query("
         <?php if ($topCrop): ?>
         <div style="background: #d4edda; padding: 15px; border-radius: 4px; margin-top: 10px;">
             <strong>🏆 Top Performing Crop:</strong><br>
-            <?php echo htmlspecialchars($topCrop['crop_name']); ?>
+            <?php echo htmlspecialchars($topCrop['crop_name'] ?? ''); ?>
         </div>
         <?php endif; ?>
     </div>
@@ -635,15 +690,15 @@ $recentActivities = $conn->query("
         <h3>📦 Inventory Stock Status</h3>
         <?php if ($inventoryStatus && $inventoryStatus->num_rows > 0): ?>
         <?php while ($item = $inventoryStatus->fetch_assoc()): 
-            $stockLevel = $item['reorder_level'] > 0 ? ($item['quantity'] / $item['reorder_level']) : 1;
+            $stockLevel = ($item['reorder_level'] !== null && $item['reorder_level'] > 0) ? ($item['quantity'] / $item['reorder_level']) : 1;
             $statusColor = $stockLevel <= 1 ? '🔴' : ($stockLevel <= 1.5 ? '🟡' : '🟢');
         ?>
         <div style="padding: 10px; border-bottom: 1px solid #eee;">
             <div style="display: flex; justify-content: space-between;">
-                <span><?php echo $statusColor; ?> <?php echo htmlspecialchars($item['item_name']); ?></span>
+                <span><?php echo $statusColor; ?> <?php echo htmlspecialchars($item['item_name'] ?? ''); ?></span>
                 <span><strong><?php echo number_format($item['quantity'], 2); ?> <?php echo $item['unit']; ?></strong></span>
             </div>
-            <small style="color: #6c757d;">Reorder at: <?php echo $item['reorder_level']; ?> <?php echo $item['unit']; ?></small>
+            <small style="color: #6c757d;">Reorder at: <?php echo $item['reorder_level'] !== null ? number_format($item['reorder_level'], 2) : 'Not set'; ?> <?php echo $item['unit']; ?></small>
         </div>
         <?php endwhile; ?>
         <?php else: ?>
@@ -667,8 +722,8 @@ $recentActivities = $conn->query("
             <tbody>
                 <?php while ($emp = $employees->fetch_assoc()): ?>
                 <tr>
-                    <td><?php echo htmlspecialchars($emp['name']); ?></td>
-                    <td><?php echo htmlspecialchars($emp['position']); ?></td>
+                    <td><?php echo htmlspecialchars($emp['name'] ?? ''); ?></td>
+                    <td><?php echo htmlspecialchars($emp['position'] ?? ''); ?></td>
                     <td><?php echo $emp['hire_date'] ? date('M Y', strtotime($emp['hire_date'])) : 'N/A'; ?></td>
                     <td><span class="badge badge-<?php echo $emp['status']; ?>"><?php echo ucfirst($emp['status']); ?></span></td>
                 </tr>
@@ -704,11 +759,11 @@ $recentActivities = $conn->query("
         <?php while ($activity = $recentActivities->fetch_assoc()): ?>
         <div class="activity-item">
             <div style="display: flex; justify-content: space-between;">
-                <span><strong><?php echo htmlspecialchars($activity['username']); ?></strong> - <?php echo htmlspecialchars($activity['action']); ?> in <?php echo htmlspecialchars($activity['module']); ?></span>
+                <span><strong><?php echo htmlspecialchars($activity['username'] ?? ''); ?></strong> - <?php echo htmlspecialchars($activity['action'] ?? ''); ?> in <?php echo htmlspecialchars($activity['module'] ?? ''); ?></span>
                 <small style="color: #6c757d;"><?php echo date('M d, H:i', strtotime($activity['created_at'])); ?></small>
             </div>
             <?php if ($activity['description']): ?>
-            <small style="color: #6c757d;"><?php echo htmlspecialchars($activity['description']); ?></small>
+            <small style="color: #6c757d;"><?php echo htmlspecialchars($activity['description'] ?? ''); ?></small>
             <?php endif; ?>
         </div>
         <?php endwhile; ?>
@@ -769,15 +824,89 @@ $recentActivities = $conn->query("
 // Print styles for PDF
 window.onbeforeprint = function() {
     document.body.style.background = 'white';
+    document.title = 'FarmSaathi_Report_' + new Date().toISOString().split('T')[0];
+};
+
+window.onafterprint = function() {
+    document.body.style.background = '';
 };
 </script>
 
 <style media="print">
-@page { margin: 1cm; }
-body { background: white !important; }
-.main-header, .main-nav, .btn, button { display: none !important; }
-.report-card { page-break-inside: avoid; }
-.reports-dashboard { padding: 0; }
+@page { 
+    margin: 1.5cm; 
+    size: A4;
+}
+
+body { 
+    background: white !important; 
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.main-header, 
+.main-nav, 
+.btn, 
+button, 
+.date-filter,
+.main-footer { 
+    display: none !important; 
+}
+
+.report-header {
+    box-shadow: none !important;
+    border-bottom: 2px solid #2d7a3e;
+    margin-bottom: 20px !important;
+}
+
+.report-header h2 {
+    font-size: 24px !important;
+}
+
+.report-card { 
+    page-break-inside: avoid; 
+    box-shadow: none !important;
+    border: 1px solid #ddd;
+    margin-bottom: 15px !important;
+}
+
+.reports-dashboard { 
+    padding: 0 !important; 
+    background: white !important;
+}
+
+.chart-container {
+    page-break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #ddd;
+}
+
+canvas {
+    max-height: 300px !important;
+}
+
+.stat-large {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.progress-fill {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.badge {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    border: 1px solid #ddd;
+}
+
+/* Add page header */
+@page {
+    @top-center {
+        content: "FarmSaathi Farm Management Report";
+    }
+}
 </style>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

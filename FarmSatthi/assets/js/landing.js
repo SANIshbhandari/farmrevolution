@@ -125,19 +125,34 @@ const animateCounter = (element, target, duration = 2000) => {
 const statsObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            const statItems = entry.target.querySelectorAll('.stat-item h3');
-            statItems.forEach(item => {
-                const text = item.textContent;
-                const number = parseInt(text.replace(/\D/g, ''));
-                if (number) {
-                    item.textContent = '0';
-                    animateCounter(item, number);
+            const counters = entry.target.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                if (target) {
+                    // Reset counter to 0 before animating
+                    counter.textContent = '0';
+                    
+                    const duration = 2000;
+                    const increment = target / (duration / 16);
+                    let current = 0;
+                    
+                    const updateCounter = () => {
+                        current += increment;
+                        if (current >= target) {
+                            counter.textContent = target.toLocaleString();
+                        } else {
+                            counter.textContent = Math.floor(current).toLocaleString();
+                            requestAnimationFrame(updateCounter);
+                        }
+                    };
+                    
+                    updateCounter();
                 }
             });
             statsObserver.unobserve(entry.target);
         }
     });
-}, { threshold: 0.5 });
+}, { threshold: 0.3 });
 
 const statsSection = document.querySelector('.stats');
 if (statsSection) {

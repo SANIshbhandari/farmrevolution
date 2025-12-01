@@ -64,12 +64,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->close();
     }
 } else {
-    $type = $transaction['type'];
-    $category = $transaction['category'];
-    $amount = $transaction['amount'];
-    $transaction_date = $transaction['transaction_date'];
+    $type = $transaction['type'] ?? 'expense';
+    $category = $transaction['category'] ?? '';
+    $amount = $transaction['amount'] ?? 0;
+    $transaction_date = $transaction['transaction_date'] ?? date('Y-m-d');
     $description = $transaction['description'] ?? '';
-    $payment_method = $transaction['payment_method'];
+    $payment_method = $transaction['payment_method'] ?? '';
 }
 ?>
 

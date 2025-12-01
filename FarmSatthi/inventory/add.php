@@ -8,8 +8,11 @@ requirePermission('manager');
 $conn = getDBConnection();
 $errors = [];
 
+// Get type from URL parameter or POST
+$default_type = sanitizeInput($_GET['type'] ?? 'supply');
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $item_type = sanitizeInput($_POST['item_type'] ?? 'supply'); // supply, equipment, employee
+    $item_type = sanitizeInput($_POST['item_type'] ?? $default_type); // supply, equipment, employee
     $item_name = sanitizeInput($_POST['item_name'] ?? '');
     $category = sanitizeInput($_POST['category'] ?? '');
     $quantity = sanitizeInput($_POST['quantity'] ?? '');
@@ -79,14 +82,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <?php endif; ?>
 
-    <form method="POST" action="add.php" class="data-form">
+    <form method="POST" action="add.php?type=<?php echo htmlspecialchars($default_type); ?>" class="data-form">
         <div class="form-row">
             <div class="form-group">
                 <label for="item_type">Item Type *</label>
                 <select id="item_type" name="item_type" class="form-control" required onchange="toggleFields()">
-                    <option value="supply">Supply (Seeds, Fertilizer, etc.)</option>
-                    <option value="equipment">Equipment (Tractor, Tools, etc.)</option>
-                    <option value="employee">Employee</option>
+                    <option value="supply" <?php echo $default_type === 'supply' ? 'selected' : ''; ?>>Supply (Seeds, Fertilizer, etc.)</option>
+                    <option value="equipment" <?php echo $default_type === 'equipment' ? 'selected' : ''; ?>>Equipment (Tractor, Tools, etc.)</option>
+                    <option value="employee" <?php echo $default_type === 'employee' ? 'selected' : ''; ?>>Employee</option>
                 </select>
             </div>
 
@@ -119,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
 
-        <div id="supply_fields">
+        <div id="supply_fields" style="display:<?php echo $default_type === 'supply' ? 'block' : 'none'; ?>;">
             <div class="form-row">
                 <div class="form-group">
                     <label for="quantity">Quantity</label>
@@ -164,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
 
-        <div id="equipment_fields" style="display:none;">
+        <div id="equipment_fields" style="display:<?php echo $default_type === 'equipment' ? 'block' : 'none'; ?>;">
             <div class="form-row">
                 <div class="form-group">
                     <label for="purchase_date">Purchase Date</label>
@@ -173,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
 
-        <div id="employee_fields" style="display:none;">
+        <div id="employee_fields" style="display:<?php echo $default_type === 'employee' ? 'block' : 'none'; ?>;">
             <div class="form-row">
                 <div class="form-group">
                     <label for="phone">Phone</label>

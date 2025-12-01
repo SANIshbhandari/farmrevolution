@@ -70,14 +70,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->close();
     }
 } else {
-    $equipment_name = $equipment['equipment_name'];
-    $type = $equipment['type'];
-    $purchase_date = $equipment['purchase_date'];
-    $last_maintenance = $equipment['last_maintenance'];
-    $next_maintenance = $equipment['next_maintenance'];
-    $condition = $equipment['condition'];
-    $value = $equipment['value'];
-    $notes = $equipment['notes'];
+    $equipment_name = $equipment['equipment_name'] ?? '';
+    $type = $equipment['type'] ?? '';
+    $purchase_date = $equipment['purchase_date'] ?? date('Y-m-d');
+    $last_maintenance = $equipment['last_maintenance'] ?? '';
+    $next_maintenance = $equipment['next_maintenance'] ?? '';
+    $condition = $equipment['condition'] ?? 'good';
+    $value = $equipment['value'] ?? 0;
+    $notes = $equipment['notes'] ?? '';
 }
 ?>
 

@@ -67,19 +67,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="form-row">
             <div class="form-group">
                 <label for="category">Category *</label>
-                <input 
-                    type="text" 
-                    id="category" 
-                    name="category" 
-                    class="form-control" 
-                    value="<?php echo htmlspecialchars($category ?? ''); ?>"
-                    placeholder="<?php echo $type === 'income' ? 'e.g., Crop Sales, Livestock Sales' : 'e.g., Feed, Fuel, Maintenance'; ?>"
-                    required
-                >
+                <select id="category" name="category" class="form-control" required>
+                    <option value="">-- Select Category --</option>
+                    <?php if ($type === 'income'): ?>
+                        <optgroup label="Income Categories">
+                            <option value="Crop Sales" <?php echo ($category ?? '') === 'Crop Sales' ? 'selected' : ''; ?>>Crop Sales</option>
+                            <option value="Livestock Sales" <?php echo ($category ?? '') === 'Livestock Sales' ? 'selected' : ''; ?>>Livestock Sales</option>
+                            <option value="Dairy Products" <?php echo ($category ?? '') === 'Dairy Products' ? 'selected' : ''; ?>>Dairy Products</option>
+                            <option value="Poultry Products" <?php echo ($category ?? '') === 'Poultry Products' ? 'selected' : ''; ?>>Poultry Products</option>
+                            <option value="Equipment Rental" <?php echo ($category ?? '') === 'Equipment Rental' ? 'selected' : ''; ?>>Equipment Rental</option>
+                            <option value="Services" <?php echo ($category ?? '') === 'Services' ? 'selected' : ''; ?>>Services</option>
+                            <option value="Government Subsidies" <?php echo ($category ?? '') === 'Government Subsidies' ? 'selected' : ''; ?>>Government Subsidies</option>
+                            <option value="Other Income" <?php echo ($category ?? '') === 'Other Income' ? 'selected' : ''; ?>>Other Income</option>
+                        </optgroup>
+                    <?php else: ?>
+                        <optgroup label="Expense Categories">
+                            <option value="Seeds & Planting" <?php echo ($category ?? '') === 'Seeds & Planting' ? 'selected' : ''; ?>>Seeds & Planting</option>
+                            <option value="Fertilizers & Pesticides" <?php echo ($category ?? '') === 'Fertilizers & Pesticides' ? 'selected' : ''; ?>>Fertilizers & Pesticides</option>
+                            <option value="Animal Feed" <?php echo ($category ?? '') === 'Animal Feed' ? 'selected' : ''; ?>>Animal Feed</option>
+                            <option value="Veterinary Services" <?php echo ($category ?? '') === 'Veterinary Services' ? 'selected' : ''; ?>>Veterinary Services</option>
+                            <option value="Labor & Wages" <?php echo ($category ?? '') === 'Labor & Wages' ? 'selected' : ''; ?>>Labor & Wages</option>
+                            <option value="Equipment & Machinery" <?php echo ($category ?? '') === 'Equipment & Machinery' ? 'selected' : ''; ?>>Equipment & Machinery</option>
+                            <option value="Fuel & Transportation" <?php echo ($category ?? '') === 'Fuel & Transportation' ? 'selected' : ''; ?>>Fuel & Transportation</option>
+                            <option value="Utilities" <?php echo ($category ?? '') === 'Utilities' ? 'selected' : ''; ?>>Utilities (Water, Electricity)</option>
+                            <option value="Rent & Lease" <?php echo ($category ?? '') === 'Rent & Lease' ? 'selected' : ''; ?>>Rent & Lease</option>
+                            <option value="Insurance" <?php echo ($category ?? '') === 'Insurance' ? 'selected' : ''; ?>>Insurance</option>
+                            <option value="Taxes & Fees" <?php echo ($category ?? '') === 'Taxes & Fees' ? 'selected' : ''; ?>>Taxes & Fees</option>
+                            <option value="Maintenance & Repairs" <?php echo ($category ?? '') === 'Maintenance & Repairs' ? 'selected' : ''; ?>>Maintenance & Repairs</option>
+                            <option value="Marketing & Sales" <?php echo ($category ?? '') === 'Marketing & Sales' ? 'selected' : ''; ?>>Marketing & Sales</option>
+                            <option value="Other Expenses" <?php echo ($category ?? '') === 'Other Expenses' ? 'selected' : ''; ?>>Other Expenses</option>
+                        </optgroup>
+                    <?php endif; ?>
+                </select>
             </div>
 
             <div class="form-group">
-                <label for="amount">Amount ($) *</label>
+                <label for="amount">Amount (रू) *</label>
                 <input 
                     type="number" 
                     id="amount" 
@@ -88,6 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     value="<?php echo htmlspecialchars($amount ?? ''); ?>"
                     step="0.01"
                     min="0"
+                    placeholder="0.00"
                     required
                 >
             </div>
@@ -128,7 +152,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Add Expense</button>
+            <button type="submit" class="btn <?php echo $type === 'income' ? 'btn-success' : 'btn-primary'; ?>">
+                <?php echo $type === 'income' ? '💰 Add Income' : '💸 Add Expense'; ?>
+            </button>
             <a href="index.php" class="btn btn-outline">Cancel</a>
         </div>
     </form>

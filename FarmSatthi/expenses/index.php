@@ -87,8 +87,25 @@ $result = $stmt->get_result();
 <div class="module-header">
     <h2>💰 Finance Management</h2>
     <?php if (canModify()): ?>
-    <a href="add.php?type=expense" class="btn btn-primary">+ Add Expense</a>
+    <div style="display: flex; gap: 10px;">
+        <a href="add.php?type=income" class="btn btn-success">+ Add Income</a>
+        <a href="add.php?type=expense" class="btn btn-primary">+ Add Expense</a>
+    </div>
     <?php endif; ?>
+</div>
+
+<!-- Quick Date Filters -->
+<div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
+    <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+        <strong style="color: #666;">Quick Filters:</strong>
+        <a href="?date_from=<?php echo date('Y-m-d'); ?>&date_to=<?php echo date('Y-m-d'); ?>" class="btn btn-sm btn-outline">Today</a>
+        <a href="?date_from=<?php echo date('Y-m-d', strtotime('-1 day')); ?>&date_to=<?php echo date('Y-m-d', strtotime('-1 day')); ?>" class="btn btn-sm btn-outline">Yesterday</a>
+        <a href="?date_from=<?php echo date('Y-m-d', strtotime('monday this week')); ?>&date_to=<?php echo date('Y-m-d'); ?>" class="btn btn-sm btn-outline">This Week</a>
+        <a href="?date_from=<?php echo date('Y-m-01'); ?>&date_to=<?php echo date('Y-m-d'); ?>" class="btn btn-sm btn-outline">This Month</a>
+        <a href="?date_from=<?php echo date('Y-m-01', strtotime('-1 month')); ?>&date_to=<?php echo date('Y-m-t', strtotime('-1 month')); ?>" class="btn btn-sm btn-outline">Last Month</a>
+        <a href="?date_from=<?php echo date('Y-01-01'); ?>&date_to=<?php echo date('Y-m-d'); ?>" class="btn btn-sm btn-outline">This Year</a>
+        <a href="index.php" class="btn btn-sm btn-secondary">Clear All</a>
+    </div>
 </div>
 
 <div class="filters-section">
@@ -127,7 +144,7 @@ $result = $stmt->get_result();
                 class="form-control"
             >
         </div>
-        <button type="submit" class="btn btn-secondary">Filter</button>
+        <button type="submit" class="btn btn-secondary">🔍 Search</button>
         <a href="index.php" class="btn btn-outline">Clear</a>
     </form>
 </div>
@@ -187,7 +204,7 @@ if ($summaryResult && $summaryRow = $summaryResult->fetch_assoc()) {
             <tr>
                 <td><?php echo formatDate($row['transaction_date']); ?></td>
                 <td><span class="badge badge-<?php echo $row['type'] === 'income' ? 'success' : 'warning'; ?>"><?php echo ucfirst($row['type']); ?></span></td>
-                <td><?php echo htmlspecialchars($row['category']); ?></td>
+                <td><?php echo htmlspecialchars($row['category'] ?? ''); ?></td>
                 <td><?php echo htmlspecialchars(substr($row['description'] ?? '', 0, 50)) . (strlen($row['description'] ?? '') > 50 ? '...' : ''); ?></td>
                 <td class="<?php echo $row['type'] === 'income' ? 'text-success' : 'text-danger'; ?>"><?php echo formatCurrency($row['amount']); ?></td>
                 <td><?php echo ucfirst(str_replace('_', ' ', $row['payment_method'])); ?></td>

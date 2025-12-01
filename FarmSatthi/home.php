@@ -42,7 +42,7 @@
         <div class="container">
             <div class="hero-content">
                 <h1 class="hero-title">Manage Your Farm <span class="highlight">Smarter</span></h1>
-                <p class="hero-subtitle">Complete farm management solution for livestock, crops, inventory, and financial tracking</p>
+                <p class="hero-subtitle">Join 50+ farms across Nepal managing 1,250+ livestock and 150+ hectares with our complete farm management solution</p>
                 <div class="hero-buttons">
                     <a href="auth/signup.php" class="btn btn-primary">Start Free Trial</a>
                     <a href="#services" class="btn btn-secondary">Learn More</a>
@@ -139,20 +139,20 @@
         <div class="container">
             <div class="stats-grid">
                 <div class="stat-item">
-                    <h3>500+</h3>
+                    <h3 class="counter" data-target="50">50</h3>
                     <p>Active Farms</p>
                 </div>
                 <div class="stat-item">
-                    <h3>10K+</h3>
+                    <h3 class="counter" data-target="1250">1,250</h3>
                     <p>Livestock Tracked</p>
                 </div>
                 <div class="stat-item">
-                    <h3>98%</h3>
+                    <h3><span class="counter" data-target="95">95</span>%</h3>
                     <p>Satisfaction Rate</p>
                 </div>
                 <div class="stat-item">
-                    <h3>24/7</h3>
-                    <p>Support Available</p>
+                    <h3 class="counter" data-target="150">150</h3>
+                    <p>Hectares Managed</p>
                 </div>
             </div>
         </div>
@@ -190,9 +190,9 @@
                     <div class="testimonial-avatar">
                         <i class="fas fa-user-circle"></i>
                     </div>
-                    <p class="testimonial-text">"FarmSaathi has transformed how I manage my dairy farm. Tracking milk production and animal health is now so easy!"</p>
+                    <p class="testimonial-text">"FarmSaathi has transformed how I manage my dairy farm. Tracking 50+ cattle, milk production and health records is now effortless. My productivity increased by 30%!"</p>
                     <h4 class="testimonial-name">Ram Bahadur Thapa</h4>
-                    <p class="testimonial-location">Dairy Farmer, Chitwan</p>
+                    <p class="testimonial-location">Dairy Farmer, Chitwan (120 cattle)</p>
                     <div class="testimonial-rating">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -205,9 +205,9 @@
                     <div class="testimonial-avatar">
                         <i class="fas fa-user-circle"></i>
                     </div>
-                    <p class="testimonial-text">"The inventory management feature saves me hours every week. I always know when to reorder supplies."</p>
+                    <p class="testimonial-text">"Managing 5,000 chickens was overwhelming until I found FarmSaathi. The inventory alerts and feed tracking save me hours every week and thousands in costs."</p>
                     <h4 class="testimonial-name">Sita Devi Sharma</h4>
-                    <p class="testimonial-location">Poultry Farmer, Jhapa</p>
+                    <p class="testimonial-location">Poultry Farmer, Jhapa (5,000 birds)</p>
                     <div class="testimonial-rating">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -220,9 +220,9 @@
                     <div class="testimonial-avatar">
                         <i class="fas fa-user-circle"></i>
                     </div>
-                    <p class="testimonial-text">"Financial reports help me understand my farm's profitability. Best investment I've made for my business!"</p>
+                    <p class="testimonial-text">"With 25 hectares of crops and 80 goats, keeping track was impossible. FarmSaathi's financial reports showed me I was losing money on certain crops. Game changer!"</p>
                     <h4 class="testimonial-name">Krishna Prasad Poudel</h4>
-                    <p class="testimonial-location">Mixed Farmer, Kaski</p>
+                    <p class="testimonial-location">Mixed Farmer, Kaski (25 hectares)</p>
                     <div class="testimonial-rating">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>

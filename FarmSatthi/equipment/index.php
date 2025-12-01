@@ -84,7 +84,7 @@ $result = $stmt->get_result();
                 <option value="needs_repair" <?php echo $condition === 'needs_repair' ? 'selected' : ''; ?>>Needs Repair</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-secondary">Filter</button>
+        <button type="submit" class="btn btn-secondary">🔍 Search</button>
         <a href="index.php" class="btn btn-outline">Clear</a>
     </form>
 </div>
@@ -109,8 +109,8 @@ $result = $stmt->get_result();
         <tbody>
             <?php while ($row = $result->fetch_assoc()): ?>
             <tr>
-                <td><?php echo htmlspecialchars($row['equipment_name']); ?></td>
-                <td><?php echo htmlspecialchars($row['type']); ?></td>
+                <td><?php echo htmlspecialchars($row['equipment_name'] ?? ''); ?></td>
+                <td><?php echo htmlspecialchars($row['type'] ?? ''); ?></td>
                 <td><?php echo formatDate($row['purchase_date']); ?></td>
                 <td><?php echo formatDate($row['last_maintenance']); ?></td>
                 <td><?php echo formatDate($row['next_maintenance']); ?></td>

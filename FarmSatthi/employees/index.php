@@ -107,8 +107,8 @@ $result = $stmt->get_result();
         <tbody>
             <?php while ($row = $result->fetch_assoc()): ?>
             <tr>
-                <td><?php echo htmlspecialchars($row['item_name']); ?></td>
-                <td><?php echo htmlspecialchars($row['category']); ?></td>
+                <td><?php echo htmlspecialchars($row['item_name'] ?? ''); ?></td>
+                <td><?php echo htmlspecialchars($row['category'] ?? ''); ?></td>
                 <td><?php echo htmlspecialchars($row['phone'] ?? 'N/A'); ?></td>
                 <td><?php echo $row['salary'] ? formatCurrency($row['salary']) : 'N/A'; ?></td>
                 <td><?php echo $row['hire_date'] ? formatDate($row['hire_date']) : 'N/A'; ?></td>
